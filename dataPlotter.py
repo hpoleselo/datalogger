@@ -1,24 +1,21 @@
-# This program plots two variables in real time
-# by henrivis
-
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
 import numpy as np
-import argparse
-
-ap = argparse.ArgumentParser()
-ap.add_argument("-s", "--savelog", type=bool, required=True,
-	help="Want to save the data? True or False")
-ap.add_argument("-r", "--refreshrate", type=int, required=True,
-	help="Every x milliseconds the data will be acquired")
-args = vars(ap.parse_args())
+import time
+import glob
 
 # Arduino is set always in linux to /dev/ttyUSB0, baudrate matches Arduino's
-#ser = serial.Serial('/dev/ttyUSB0', 9600)
-ser = serial.Serial('/dev/ttyACM0', 9600)
-print("Using port: %s") %ser.name
+# Iniciando conexao serial
+port1 = "/dev/ttyACM0"
+port2 = "/dev/ttyUSB0"
+
+if (glob.glob(port1)==[port1]): 
+	comport = serial.Serial(port1, 9600)
+else: 
+	comport = serial.Serial(port2, 9600)
+print("Using port: %s") %comport.name
 
 # Setup for plotting in Matplotlib
 style.use('fivethirtyeight')
@@ -31,9 +28,9 @@ ax1 = fig.add_subplot(1,1,1)
 
 dataFromSerial = 0
 
-# Store what the user gave to us
-saveLog = args["savelog"]
-refreshRate = args["refreshrate"]
+# Stantard, always save log and 300 ms refresh rate
+saveLog = True
+refreshRate = 300
 
 # Adicionar argparse com a taxa de atualizacao e True se for pra salvar log
 
@@ -41,17 +38,28 @@ def readFromSerial():
     """ Opening and echoing the Serial port. """
     try:
         # Reads until it gets a carriage return. MAKE SURE THERE IS A CARRIAGE RETURN OR IT READS FOREVER
-        data = ser.readline()
+        data = comport.readline()
         # Splits string into a list at the tabs   
         separatedData = data.split()
         return separatedData
     except(KeyboardInterrupt):
-        ser.close()
+        comport.close()
 
 
 def sendToSerial():
     """ Send byte to ATMega328"""
-    pass
+    PARAM_CARACTER='t'
+    PARAM_ASCII=str(chr(116))       # Equivalente 116 = t
+    
+    # Time entre a conexao serial e o tempo para escrever (enviar algo)
+    time.sleep(1.8) # Entre 1.5s a 2s
+    
+    #comport.write(PARAM_CARACTER)
+    comport.write(PARAM_ASCII.encode())
+    
+    VALUE_SERIAL=comport.readline()
+
+    print ('\nRetorno da serial: {!r}'.format(VALUE_SERIAL))
 
 
 def plotData(i):
