@@ -15,15 +15,15 @@ void USART_init(void);
 unsigned char USART_receive(void);
 void USART_send( unsigned char data);
 
-
 int main(void){
+  pinMode(LED_BUILTIN, OUTPUT);
   char dadoASerEnviado = "o";
   // Inicializa a USART
   USART_init();
   while(1) {
-    USART_send(dadoASerEnviado);
-    //USART_receive(dadoASerEnviado);
-    _delay_ms(2000);
+    //USART_send(dadoASerEnviado);
+    USART_receive();
+    //_delay_ms(500);
   }
    // Como usual, todas as funcoes q sao non-void precisam de um return
   return 0;
@@ -54,6 +54,12 @@ void USART_send(unsigned char data){
 unsigned char USART_receive(void){
   // Faz-se tipo um polling no registrador de recebimento
   while(!(UCSR0A & (1<<RXC0)));
+  
+  // Teste pra ver se o USART esta funcionando, liga o LED do Arduino
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  // Entender o porque o led nao desliga depois q manda outro comando
+  digitalWrite(LED_BUILTIN, LOW);
   return UDR0;
   
 }
