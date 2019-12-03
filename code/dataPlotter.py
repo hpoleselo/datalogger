@@ -7,7 +7,16 @@ from matplotlib import style
 import numpy as np
 import time
 import glob
-import os
+import argparse
+import sys
+
+# Arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-s", "--savelog", type=str, required=True,
+	help="Want to save the data? True or False")
+ap.add_argument("-r", "--refreshrate", type=int, required=True,
+	help="Every x milliseconds the data will be acquired")
+args = vars(ap.parse_args())
 
 # Works on linux change it to use in Windows | BAUDRATE = 9600
 port1 = "/dev/ttyACM0"
@@ -19,7 +28,6 @@ else:
 	comport = serial.Serial(port2, 9600)
 
 print ('Using port: {!r}'.format(comport.name))
-os.system('sudo chmod 666 {!r}'.format(comport.name))
 
 # Set this from 1.5 to 2.0s
 time.sleep(1.8) 
@@ -43,10 +51,9 @@ ax1 = fig.add_subplot(1,1,1)
 fig.subplots_adjust(0.16, 0.12, 0.95, 0.9, 0.2, 0.2)
 dataFromSerial = 0
 
-
-# EDITAR AQUI ALEMAO
-saveLog = True
-refreshRate = 100
+# Store what the user gave to us
+saveLog = args["savelog"]
+refreshRate = args["refreshrate"]
 
 def readFromSerial():
     """ Callback that is called everytime we want to plot a new point, the rate
@@ -67,7 +74,6 @@ def plotData(i):
     global count, ys  
     count += 1
     data = readFromSerial()
-
     # The data must me plotted as float not as a string!
     xs.append(float(count))
     ys.append(float(data))
@@ -87,7 +93,7 @@ def saveData():
     outputFile = "logFromATMega328.txt"  
     global xs,ys
     # save data to 2d column, set the decimal precision to 3 floating-point values and ',' as delimiter
-    np.savetxt('data.txt', np.column_stack((xs, ys)), fmt='%0.3f', delimiter=',') 
+    np.savetxt(outputFile, np.column_stack((xs, ys)), fmt='%0.3f', delimiter=',') 
 
 
 def main():
@@ -95,7 +101,7 @@ def main():
 	# Create the fig, calls plotData every refreshRate milliseconds
     animt = animation.FuncAnimation(fig, plotData, interval=refreshRate)
     plt.show()
-    if saveLog:
+    if saveLog=='True':
         saveData()
 
 if __name__ == "__main__":

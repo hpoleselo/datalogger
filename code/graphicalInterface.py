@@ -7,6 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
+
+refreshRate = 50
+saveLog = True
 
 class Ui_MainWindow(object):
 
@@ -105,6 +109,7 @@ class Ui_MainWindow(object):
         print("[INFO]: Setting new rate for the acquistion...")
 
     def pressedRefreshRate(self):
+        global refreshRate
         print("[INFO]: Retrieving refresh rate for the graph to update...")
         refreshRate = self.comboBox.currentText()
         refreshRate = int(refreshRate)
@@ -113,8 +118,12 @@ class Ui_MainWindow(object):
     def pressedInit(self):
         print("[INFO]: Calling main program (main from the source code)")
         self.logCheckBox()
+        st = "python dataPlotter.py -s "+str(saveLog)+" -r "+str(refreshRate)
+        os.system(st)
+
 
     def logCheckBox(self):
+        global saveLog
         if self.saveLog.isChecked():
             print("[INFO]: Logging has been activated")
             saveLog = True
