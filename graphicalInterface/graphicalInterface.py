@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(455, 348)
@@ -70,6 +71,19 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+        # Colocamos as funcoes que irao fazer o mapeamento
+
+        # Amarra o botao a essa funcao
+        self.refreshRate.clicked.connect(self.clicked)
+        # Adicionado por nos
+        self.refreshRate.clicked.connect(self.pressedRefreshRate)
+
+        self.init.clicked.connect(self.pressedInit)
+
+        self.saveLog
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Data Logger for ATMega328P"))
@@ -84,6 +98,31 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Taxa de Aquisição de Dados (ms):"))
         self.saveLog.setText(_translate("MainWindow", "Salvar Log"))
         self.init.setText(_translate("MainWindow", "Inicializar"))
+    
+
+    # Event functions pra mapear os eventos com a Interface Grafica
+    def clicked(self):
+        print("[INFO]: Setting new rate for the acquistion...")
+
+    def pressedRefreshRate(self):
+        print("[INFO]: Retrieving refresh rate for the graph to update...")
+        refreshRate = self.comboBox.currentText()
+        refreshRate = int(refreshRate)
+        print("[INFO]: Refresh rate set to: {!r}".format(refreshRate))
+
+    def pressedInit(self):
+        print("[INFO]: Calling main program (main from the source code)")
+        self.logCheckBox()
+
+    def logCheckBox(self):
+        if self.saveLog.isChecked():
+            print("[INFO]: Logging has been activated")
+            saveLog = True
+        else:
+            print("[INFO]: Logging has been deactivated")
+            saveLog = False
+
+
 
 
 if __name__ == "__main__":
