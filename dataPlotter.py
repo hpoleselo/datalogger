@@ -5,9 +5,10 @@ from matplotlib import style
 import numpy as np
 import time
 import glob
+import os
 
-# Arduino is set always in linux to /dev/ttyUSB0, baudrate matches Arduino's
-# Iniciando conexao serial
+Vref = 5;
+
 port1 = "/dev/ttyACM0"
 port2 = "/dev/ttyUSB0"
 
@@ -17,6 +18,8 @@ else:
 	comport = serial.Serial(port2, 9600)
 
 print ('Using port: {!r}'.format(comport.name))
+os.system('sudo chmod 666 {!r}'.format(comport.name))
+
 time.sleep(1.8) # Entre 1.5s a 2s
 
 # Setup for plotting in Matplotlib
@@ -24,9 +27,9 @@ style.use('fivethirtyeight')
 
 xs = []
 ys = []
+
 # Variable to count the samples that are being received
 count = 0
-
 
 fig = plt.figure()
 
@@ -35,34 +38,20 @@ ax1 = fig.add_subplot(1,1,1)
 dataFromSerial = 0
 
 # Stantard, always save log and 300 ms refresh rate
-saveLog = False
-refreshRate = 300
+saveLog = True
+refreshRate = 100
 
 def readFromSerial():
     """ Callback that is called everytime we want to plot a new point, the rate
     that this callback is called is defined by the user. This basically hears the
     serial port. """
     try:
-        # big para
         PARAM_CARACTER='t'
         comport.write(PARAM_CARACTER.encode())
         dataFromSerial = int.from_bytes(comport.read(), "big")
-        return dataFromSerial
+        return dataFromSerial*5/255
     except(KeyboardInterrupt):
         comport.close()
-
-
-def sendToSerial():
-    """ Send byte to ATMega328"""
-
-    #comport.write(PARAM_CARACTER)
-    #comport.write(PARAM_ASCII.encode())
-    PARAM_CARACTER='t'
-    comport.write(PARAM_CARACTER.encode())
-    
-    VALUE_SERIAL=comport.readline()
-
-    print ('\nRetorno da serial: {!r}'.format(VALUE_SERIAL))
 
 
 def plotData(i):
@@ -79,19 +68,16 @@ def plotData(i):
     ax1.clear()
     ax1.plot(xs,ys)
 
+    ax1.set_xlabel('milliseconds (ms)')
+    ax1.set_ylabel('Volts (V)')
+    ax1.set_title('Sensor Acquistion')
+
 
 def saveData():
     """ Store the retrieved data into a txt file to the local where the script is running. """
     outputFile = "logFromATMega328.txt"  
     global xs,ys
-    # Combines lists together
-    rows = zip(xs, ys)
-
-    # Creates array from list
-    row_arr = np.array(rows)
-
-    # Saves data in file (load w/np.loadtxt())
-    np.savetxt(outputFile, row_arr)
+    np.savetxt('data.txt', np.column_stack((xs, ys)), fmt='%0.3f', delimiter=',') 
 
 
 def main():
@@ -100,7 +86,6 @@ def main():
     plt.show()
     if saveLog:
         saveData()
-    
 
 if __name__ == "__main__":
     try:
