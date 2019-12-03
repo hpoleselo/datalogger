@@ -40,7 +40,7 @@ Vref = 5;
 # Create figure, add a plot 1x1 and use plot 1
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
-fig.subplots_adjust(0.15, 0.05, 0.9, 0.9, 0.2, 0.2)
+fig.subplots_adjust(0.16, 0.12, 0.95, 0.9, 0.2, 0.2)
 dataFromSerial = 0
 
 
