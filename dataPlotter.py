@@ -15,47 +15,50 @@ if (glob.glob(port1)==[port1]):
 	comport = serial.Serial(port1, 9600)
 else: 
 	comport = serial.Serial(port2, 9600)
-print("Using port: %s") %comport.name
+
+print ('Using port: {!r}'.format(comport.name))
+time.sleep(1.8) # Entre 1.5s a 2s
 
 # Setup for plotting in Matplotlib
 style.use('fivethirtyeight')
 
 xs = []
 ys = []
+# Variable to count the samples that are being received
+count = 0
+
+
 fig = plt.figure()
+
 # Um plot 1x1 e o plot eh o numero 1
 ax1 = fig.add_subplot(1,1,1)
-
 dataFromSerial = 0
 
 # Stantard, always save log and 300 ms refresh rate
-saveLog = True
+saveLog = False
 refreshRate = 300
 
-# Adicionar argparse com a taxa de atualizacao e True se for pra salvar log
-
 def readFromSerial():
-    """ Opening and echoing the Serial port. """
+    """ Callback that is called everytime we want to plot a new point, the rate
+    that this callback is called is defined by the user. This basically hears the
+    serial port. """
     try:
-        # Reads until it gets a carriage return. MAKE SURE THERE IS A CARRIAGE RETURN OR IT READS FOREVER
-        data = comport.readline()
-        # Splits string into a list at the tabs   
-        separatedData = data.split()
-        return separatedData
+        # big para
+        PARAM_CARACTER='t'
+        comport.write(PARAM_CARACTER.encode())
+        dataFromSerial = int.from_bytes(comport.read(), "big")
+        return dataFromSerial
     except(KeyboardInterrupt):
         comport.close()
 
 
 def sendToSerial():
     """ Send byte to ATMega328"""
-    PARAM_CARACTER='t'
-    PARAM_ASCII=str(chr(116))       # Equivalente 116 = t
-    
-    # Time entre a conexao serial e o tempo para escrever (enviar algo)
-    time.sleep(1.8) # Entre 1.5s a 2s
-    
+
     #comport.write(PARAM_CARACTER)
-    comport.write(PARAM_ASCII.encode())
+    #comport.write(PARAM_ASCII.encode())
+    PARAM_CARACTER='t'
+    comport.write(PARAM_CARACTER.encode())
     
     VALUE_SERIAL=comport.readline()
 
@@ -64,16 +67,14 @@ def sendToSerial():
 
 def plotData(i):
     """ Plot the retrieved data from Arduino via serial communication using matplotlib. """
-    global xs, ys    
+    global count, ys  
+    count += 1
     data = readFromSerial()
-    #if len(data) > 1:
-    # Extract the element from the list
-    strToSplit = data[0]
-    # Separate the time and sensor data
-    x, y = strToSplit.split(',')
+
     # The data must me plotted as float not as a string!
-    xs.append(float(x))
-    ys.append(float(y))
+    xs.append(float(count))
+    ys.append(float(data))
+
     # Clean everything before we plot
     ax1.clear()
     ax1.plot(xs,ys)
@@ -99,6 +100,10 @@ def main():
     plt.show()
     if saveLog:
         saveData()
+    
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except(KeyboardInterrupt):
+        comport.close()
