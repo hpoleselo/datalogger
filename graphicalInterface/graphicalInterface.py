@@ -2,32 +2,65 @@
 
 # Form implementation generated from reading ui file 'graphicalInterface.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.2
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(868, 488)
+        MainWindow.resize(455, 348)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.enviarBit = QtWidgets.QPushButton(self.centralwidget)
-        self.enviarBit.setGeometry(QtCore.QRect(160, 280, 171, 111))
-        font = QtGui.QFont()
-        font.setFamily("Gubbi")
-        self.enviarBit.setFont(font)
-        self.enviarBit.setObjectName("enviarBit")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(160, 40, 171, 21))
+        self.label.setGeometry(QtCore.QRect(110, 10, 241, 41))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu Mono")
+        font.setPointSize(17)
+        self.label.setFont(font)
         self.label.setObjectName("label")
+        self.comboBox = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox.setGeometry(QtCore.QRect(180, 80, 101, 51))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.refreshRate = QtWidgets.QPushButton(self.centralwidget)
+        self.refreshRate.setGeometry(QtCore.QRect(140, 140, 191, 41))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu Mono")
+        self.refreshRate.setFont(font)
+        self.refreshRate.setObjectName("refreshRate")
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(110, 30, 271, 71))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu Mono")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.saveLog = QtWidgets.QCheckBox(self.centralwidget)
+        self.saveLog.setGeometry(QtCore.QRect(180, 190, 111, 21))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu Mono")
+        self.saveLog.setFont(font)
+        self.saveLog.setObjectName("saveLog")
+        self.init = QtWidgets.QPushButton(self.centralwidget)
+        self.init.setGeometry(QtCore.QRect(140, 220, 201, 71))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu Mono")
+        font.setPointSize(13)
+        font.setBold(True)
+        font.setWeight(75)
+        self.init.setFont(font)
+        self.init.setObjectName("init")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 868, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 455, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -39,9 +72,18 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.enviarBit.setText(_translate("MainWindow", "Enviar bit"))
-        self.label.setText(_translate("MainWindow", "DataLogger - ENGC50"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Data Logger for ATMega328P"))
+        self.label.setText(_translate("MainWindow", "Data Logger - ENGC50"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "50"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "500"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "1000"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "5000"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "10000"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "15000"))
+        self.refreshRate.setText(_translate("MainWindow", "Atualizar Taxa"))
+        self.label_2.setText(_translate("MainWindow", "Taxa de Aquisição de Dados (ms):"))
+        self.saveLog.setText(_translate("MainWindow", "Salvar Log"))
+        self.init.setText(_translate("MainWindow", "Inicializar"))
 
 
 if __name__ == "__main__":
@@ -52,3 +94,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
