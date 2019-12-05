@@ -3,6 +3,8 @@ Work for the lecture Microprocessor Systems ENGC50 from Federal University of Ba
 
 Implementation of a Data Logger using C and Python to retrieve the data from sensors (ADC) from ATMega328. 
 
+![dataplotter](https://user-images.githubusercontent.com/24254286/70197806-bfd8bf00-16eb-11ea-86ee-78e6bfe7d23b.gif)
+
 ## Installation
 
 The program was mainly designed for Linux, an adaptation is welcome for Windows. We used Python3.5 and the needed packages to work are:
