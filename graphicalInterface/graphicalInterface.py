@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import dataPlotter
 
 class Ui_MainWindow(object):
 
@@ -113,6 +114,8 @@ class Ui_MainWindow(object):
     def pressedInit(self):
         print("[INFO]: Calling main program (main from the source code)")
         self.logCheckBox()
+        dataPlotter.main()
+
 
     def logCheckBox(self):
         if self.saveLog.isChecked():

@@ -1,14 +1,15 @@
 # Datalogger for ATMega328
 Work for the lecture Microprocessor Systems ENGC50 from Federal University of Bahia.
+
 Implementation of a Data Logger using C and Python to retrieve the data from sensors (ADC) from ATMega328. 
 
 ## Installation
 
 The program was mainly designed for Linux, an adaptation is welcome for Windows. We used Python3.5 and the needed packages to work are:
 
-``` $ pip3.6 install pyserial ```
+``` $ pip3.5 install pyserial ```
 
-``` $ pip3.6 install matplotlib ```
+``` $ pip3.5 install matplotlib ```
 
 ``` $ sudo apt-get install python3.5-tk ```
 
@@ -21,7 +22,7 @@ Upload the code to your Arduino using Arduino IDE or command line.
 
 After uploading run the Python program:
 
-```$ python dataPlotter.py ```
+```$ python3.5 dataPlotter.py ```
 
 ## Authors
 
@@ -34,5 +35,5 @@ After uploading run the Python program:
 
 ## Professor
 
-**Paulo Cesar Farias** - [pcmaf]()
+**Paulo Cesar Farias** - [pcmaf](https://github.com/pcmaf)
 
