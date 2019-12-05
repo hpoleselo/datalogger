@@ -1,4 +1,4 @@
-# PYHTON 3.7 COLOCAR VERSÃO?
+#!/usr/bin/python3
 
 import serial
 import matplotlib.pyplot as plt
@@ -43,7 +43,7 @@ ys = []
 count = 0
 
 # Reference voltage
-Vref = 5; 
+Vref = 5
 
 # Create figure, add a plot 1x1 and use plot 1
 fig = plt.figure()
