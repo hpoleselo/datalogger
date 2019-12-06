@@ -20,7 +20,7 @@ We used the following setup:
 
 ![setup](https://user-images.githubusercontent.com/24254286/69362707-cdaf2e80-0c6d-11ea-9f6f-5ea44a958eea.jpg)
 
-Upload the code from ``` /code/code.ino ``` to your Arduino using Arduino IDE, command line or any other IDE as you wish.
+Upload the code from ``` /src/uCInterface.ino ``` to your Arduino using Arduino IDE, command line or any other IDE as you wish.
 
 After uploading run the Python program:
 

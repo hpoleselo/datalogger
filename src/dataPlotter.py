@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -63,14 +61,20 @@ def readFromSerial():
     try:
         PARAM_CARACTER='t'
         comport.write(PARAM_CARACTER.encode())
+        print("TETSTE1")
+        print(comport.read())
         dataFromSerial = int.from_bytes(comport.read(), "big")
+        print("TESTE2")
+        print(dataFromSerial)
+        # TODO: Colocar tratamento se vier None
+        #dataFromSerial = int.from_bytes(b'\x00\x01', "big")
         return dataFromSerial*Vref/255
-    except(KeyboardInterrupt):
+    except(KeyboardInterrupt, ):
         comport.close()
 
 
 def plotData(i):
-    """ Plot the retrieved data from Arduino via serial communication using matplotlib. """
+    """ Plot the retrieved data from Arduino via serial communication using Matplotlib. """
     global count, ys  
     count += 1
     data = readFromSerial()
